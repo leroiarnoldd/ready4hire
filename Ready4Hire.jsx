@@ -3559,7 +3559,7 @@ function LocalShopsSection({user,onLoginNeeded,setTab,defaultCity}){
 }
 
 // ─── HOME ─────────────────────────────────────────────────
-function Home({setTab,R}){
+function HomePage({setTab,R}){
   const [service,setService]=useState("carpet"); // "carpet" | "patio"
   const [mode,setMode]=useState("hire");
   const [pc,setPc]=useState("");
@@ -7960,7 +7960,7 @@ export default function App(){
       <style>{CSS}</style>
       <Nav tab={tab} setTab={setTab} user={user} setAuthOpen={setAuthOpen} alertCount={alertCount}
         onSignOut={handleSignOut} onDashboard={()=>setTab("dashboard")}/>
-      {tab==="home"      &&<Home     setTab={setTab} R={R}/>}
+      {tab==="home"      &&<HomePage setTab={setTab} R={R}/>}
       {tab==="hire"      &&<HirePage user={user} onLoginNeeded={()=>setAuthOpen("register")} addAlert={()=>setAlertCount(c=>c+1)} setTab={setTab} R={R}/>}
       {tab==="services"  &&<ServicesPage user={user} onLoginNeeded={()=>setAuthOpen("register")} R={R}/>}
       {tab==="eot"       &&<EOTPage  setTab={setTab} user={user} onLoginNeeded={()=>setAuthOpen("register")} R={R}/>}
