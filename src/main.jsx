@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from 'import App from '../Ready4Hire.jsx''
+import App from '../Ready4Hire.jsx'
 
 document.getElementById('loading')?.remove()
 
