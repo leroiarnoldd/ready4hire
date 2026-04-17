@@ -1,1 +1,18 @@
-/*    /index.html   200
+# Cloudflare Pages — _redirects
+# Place this file in your project root (same level as index.html)
+# Cloudflare reads this automatically on Pages deployments
+
+# Auth callback (handles OAuth redirects)
+/auth-callback    /auth-callback.html    200
+
+# Dashboard
+/dashboard        /dashboard.html        200
+
+# Auth page
+/auth             /auth.html             200
+
+# Supabase auth email redirects
+/reset-password   /reset-password.html   200
+
+# SPA fallback — all unknown routes serve index.html
+/*                /index.html            200

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Business Dashboard — Ready 4 Hire</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green-dark:#1B5E20; --green-mid:#2E7D32; --green-light:#C8E6C9; --green-bg:#F1F8F1;
+  --amber:#F5A800; --amber-dark:#E09600;
+  --text:#1a1a1a; --text-muted:#6B7280; --border:#E5E7EB;
+  --white:#ffffff; --radius:12px;
+  --shadow:0 2px 12px rgba(0,0,0,0.07); --shadow-lg:0 8px 32px rgba(0,0,0,0.1);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--green-bg);color:var(--text);min-height:100vh}
+
+/* Top nav */
+.topnav{
+  background:var(--green-dark);padding:0 24px;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.logo{font-family:'DM Serif Display',serif;font-size:20px;color:#fff}
+.logo span{color:var(--amber)}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-user{font-size:13px;color:rgba(255,255,255,0.75)}
+.btn-signout{
+  font-size:12px;padding:6px 14px;background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.25);border-radius:8px;color:#fff;
+  cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s;
+}
+.btn-signout:hover{background:rgba(255,255,255,0.2)}
+
+/* Layout */
+.layout{display:flex;min-height:calc(100vh - 60px)}
+
+/* Sidebar */
+.sidebar{
+  width:220px;background:var(--white);border-right:1px solid var(--border);
+  padding:24px 0;flex-shrink:0;
+}
+.sidebar-section{padding:0 16px;margin-bottom:8px}
+.sidebar-label{font-size:10px;font-weight:600;letter-spacing:0.08em;color:var(--text-muted);text-transform:uppercase;padding:0 8px;margin-bottom:6px}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;border-radius:9px;
+  font-size:14px;font-weight:500;color:var(--text-muted);
+  cursor:pointer;transition:all 0.15s;
+}
+.nav-item:hover{background:var(--green-bg);color:var(--green-dark)}
+.nav-item.active{background:#E8F5E9;color:var(--green-dark)}
+.nav-item svg{width:16px;height:16px;flex-shrink:0}
+.status-badge{
+  margin-left:auto;font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;
+}
+.badge-pending{background:#FEF3C7;color:#D97706}
+.badge-active{background:#D1FAE5;color:#059669}
+
+/* Main */
+.main{flex:1;padding:28px 32px;max-width:860px}
+
+.page-title{font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:4px}
+.page-sub{font-size:14px;color:var(--text-muted);margin-bottom:28px}
+
+/* Panels */
+.panel{background:var(--white);border-radius:16px;box-shadow:var(--shadow);margin-bottom:24px;overflow:hidden}
+.panel-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.panel-title{font-size:16px;font-weight:600}
+.panel-body{padding:24px}
+
+/* Steps indicator */
+.steps{display:flex;gap:0;margin-bottom:28px}
+.step{
+  flex:1;padding:14px 16px;background:var(--white);
+  border:1px solid var(--border);font-size:13px;
+  display:flex;align-items:center;gap:8px;
+  position:relative;
+}
+.step:first-child{border-radius:10px 0 0 10px}
+.step:last-child{border-radius:0 10px 10px 0}
+.step+.step{border-left:none}
+.step.done{background:#F0FDF4;border-color:#86EFAC}
+.step.active{background:#E8F5E9;border-color:var(--green-mid);z-index:1}
+.step-num{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--border);color:var(--text-muted);
+  font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.step.active .step-num{background:var(--green-dark);color:#fff}
+.step.done .step-num{background:#22C55E;color:#fff}
+.step-label{font-weight:500;font-size:12px;color:var(--text-muted)}
+.step.active .step-label{color:var(--green-dark)}
+.step.done .step-label{color:#16A34A}
+
+/* Forms */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.form-grid.cols-3{grid-template-columns:1fr 1fr 1fr}
+.full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:500}
+.field input,.field select,.field textarea{
+  padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;
+  font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);
+  outline:none;transition:border-color 0.2s,box-shadow 0.2s;
+  background:var(--white);
+}
+.field input:focus,.field select,.field textarea:focus{border-color:var(--green-mid);box-shadow:0 0 0 3px rgba(46,125,50,0.1)}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.field textarea{resize:vertical;min-height:90px}
+.field .hint{font-size:11px;color:var(--text-muted)}
+
+/* City tags */
+.city-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.city-tag{
+  padding:5px 11px;border-radius:99px;font-size:12px;font-weight:500;cursor:pointer;
+  border:1.5px solid var(--border);color:var(--text-muted);transition:all 0.15s;
+}
+.city-tag.selected{background:var(--green-dark);border-color:var(--green-dark);color:#fff}
+
+/* Pricing table */
+.pricing-rows{display:flex;flex-direction:column;gap:10px}
+.pricing-row{
+  display:grid;grid-template-columns:1fr 1fr 80px 40px;gap:10px;align-items:center;
+}
+.btn-remove{
+  width:32px;height:32px;border:none;background:#FEE2E2;color:#EF4444;
+  border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;
+  transition:background 0.15s;
+}
+.btn-remove:hover{background:#FECACA}
+.btn-add-row{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 14px;background:var(--green-bg);border:1.5px dashed var(--green-light);
+  border-radius:10px;color:var(--green-mid);font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;width:fit-content;
+  margin-top:10px;
+}
+.btn-add-row:hover{border-color:var(--green-mid);background:#E8F5E9}
+
+/* Doc upload */
+.upload-zone{
+  border:2px dashed var(--border);border-radius:12px;padding:32px;
+  text-align:center;cursor:pointer;transition:all 0.2s;
+  background:#FAFAFA;
+}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--green-mid);background:#F0FBF0}
+.upload-icon{font-size:36px;margin-bottom:12px}
+.upload-text{font-size:14px;font-weight:500;margin-bottom:4px}
+.upload-sub{font-size:12px;color:var(--text-muted)}
+.upload-input{display:none}
+
+.doc-list{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.doc-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 14px;background:var(--green-bg);border-radius:10px;
+}
+.doc-icon{font-size:20px}
+.doc-info{flex:1}
+.doc-name{font-size:13px;font-weight:500}
+.doc-meta{font-size:11px;color:var(--text-muted)}
+.doc-type-select{
+  padding:4px 8px;border:1px solid var(--border);border-radius:6px;
+  font-size:11px;font-family:'DM Sans',sans-serif;background:var(--white);
+}
+.doc-remove{background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:18px;padding:0 4px}
+
+/* Action bar */
+.action-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:20px;border-top:1px solid var(--border);margin-top:8px;
+}
+.btn-save{
+  padding:11px 28px;background:var(--green-dark);color:#fff;border:none;
+  border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;transition:background 0.2s;
+}
+.btn-save:hover{background:var(--green-mid)}
+.btn-save:disabled{background:#9CA3AF;cursor:not-allowed}
+.btn-secondary{
+  padding:11px 20px;background:var(--white);color:var(--text);
+  border:1.5px solid var(--border);border-radius:10px;
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;
+  transition:border-color 0.2s;
+}
+.btn-secondary:hover{border-color:#9CA3AF}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--green-dark);color:#fff;
+  padding:12px 20px;border-radius:10px;font-size:14px;font-weight:500;
+  box-shadow:var(--shadow-lg);transform:translateY(80px);opacity:0;
+  transition:all 0.3s;z-index:999;
+}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.error{background:#DC2626}
+
+/* Progress bar at top */
+.progress-bar{
+  height:3px;background:var(--green-light);
+  position:fixed;top:60px;left:0;right:0;z-index:99;
+}
+.progress-fill{
+  height:100%;background:var(--amber);
+  transition:width 0.4s ease;width:33%;
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{padding:20px 16px}
+  .form-grid{grid-template-columns:1fr}
+  .form-grid.cols-3{grid-template-columns:1fr 1fr}
+  .steps{gap:4px}
+  .step-label{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo">Ready <span>4</span> Hire</div>
+  <div class="nav-right">
+    <span class="nav-user" id="user-name">Loading…</span>
+    <button class="btn-signout" onclick="signOut()">Sign out</button>
+  </div>
+</nav>
+
+<div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Dashboard</div>
+      <div class="nav-item active" onclick="showSection('details')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h4"/></svg>
+        Business Details
+      </div>
+      <div class="nav-item" onclick="showSection('pricing')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Pricing
+      </div>
+      <div class="nav-item" onclick="showSection('documents')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Documents
+        <span class="status-badge badge-pending" id="doc-badge">0</span>
+      </div>
+    </div>
+    <div class="sidebar-section" style="margin-top:16px">
+      <div class="sidebar-label">Listing</div>
+      <div class="nav-item" onclick="window.location.href='index.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        View Site
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+
+    <!-- Steps -->
+    <div class="steps">
+      <div class="step active" id="step-1">
+        <div class="step-num">1</div>
+        <div class="step-label">Business Info</div>
+      </div>
+      <div class="step" id="step-2">
+        <div class="step-num">2</div>
+        <div class="step-label">Pricing</div>
+      </div>
+      <div class="step" id="step-3">
+        <div class="step-num">3</div>
+        <div class="step-label">Documents</div>
+      </div>
+    </div>
+
+    <!-- === SECTION: Business Details === -->
+    <div id="section-details">
+      <div class="page-title">Business Details</div>
+      <div class="page-sub">Tell customers about your business and where you operate</div>
+
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Basic Information</span></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="field full">
+              <label>Business name *</label>
+              <input type="text" id="biz-name" placeholder="e.g. CleanPro London Ltd"/>
+            </div>
+            <div class="field full">
+              <label>Description</label>
+              <textarea id="biz-desc" placeholder="Tell customers what makes your service special…"></textarea>
+            </div>
+            <div class="field">
+              <label>Service type *</label>
+              <select id="biz-service">
+                <option value="">Select…</option>
+                <option value="carpet">Carpet Cleaning</option>
+                <option value="patio">Patio Cleaning</option>
+                <option value="eot">End-of-Tenancy</option>
+                <option value="multiple">Multiple Services</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Phone</label>
+              <input type="tel" id="biz-phone" placeholder="07700 900000"/>
+            </div>
+            <div class="field">
+              <label>Business email</label>
+              <input type="email" id="biz-email" placeholder="hello@yourbusiness.co.uk"/>
+            </div>
+            <div class="field">
+              <label>Website</label>
+              <input type="url" id="biz-website" placeholder="https://"/>
+            </div>
+            <div class="field full">
+              <label>Address / area</label>
+              <input type="text" id="biz-address" placeholder="e.g. 123 High Street, London, SE1 2AB"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Cities Covered</span></div>
+        <div class="panel-body">
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px">Select all cities where you offer services</p>
+          <div class="city-tags" id="city-tags"></div>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <span></span>
+        <button class="btn-save" onclick="saveDetails()">Save & Continue →</button>
+      </div>
+    </div>
+
+    <!-- === SECTION: Pricing === -->
+    <div id="section-pricing" style="display:none">
+      <div class="page-title">Pricing Information</div>
+      <div class="page-sub">Help customers understand your rates before they enquire</div>
+
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Pricing model</span></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="field">
+              <label>How do you charge?</label>
+              <select id="pricing-model">
+                <option value="fixed">Fixed price per job</option>
+                <option value="hourly">Hourly rate</option>
+                <option value="quote_only">Quote only</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Starting from (£)</label>
+              <input type="number" id="price-from" placeholder="0.00" min="0" step="0.01"/>
+            </div>
+            <div class="field full">
+              <label>Pricing notes</label>
+              <textarea id="pricing-notes" placeholder="e.g. Prices vary depending on size of property. VAT included. Minimum call-out charge applies…"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Service Tiers</span>
+          <span style="font-size:12px;color:var(--text-muted)">Optional — show specific package prices</span>
+        </div>
+        <div class="panel-body">
+          <div class="pricing-rows" id="pricing-rows">
+            <!-- rows injected by JS -->
+          </div>
+          <button class="btn-add-row" onclick="addPricingRow()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add tier
+          </button>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <button class="btn-secondary" onclick="showSection('details')">← Back</button>
+        <button class="btn-save" onclick="savePricing()">Save & Continue →</button>
+      </div>
+    </div>
+
+    <!-- === SECTION: Documents === -->
+    <div id="section-documents" style="display:none">
+      <div class="page-title">Certifications & Documents</div>
+      <div class="page-sub">Upload proof of insurance, qualifications, and licences to build customer trust</div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Upload Documents</span>
+        </div>
+        <div class="panel-body">
+          <div class="upload-zone" id="upload-zone"
+            onclick="document.getElementById('file-input').click()"
+            ondragover="handleDragOver(event)"
+            ondragleave="handleDragLeave(event)"
+            ondrop="handleDrop(event)">
+            <div class="upload-icon">📄</div>
+            <div class="upload-text">Drop files here, or click to browse</div>
+            <div class="upload-sub">PDF, PNG, JPG • Max 10MB per file</div>
+          </div>
+          <input type="file" id="file-input" class="upload-input" multiple accept=".pdf,.png,.jpg,.jpeg" onchange="handleFiles(this.files)"/>
+
+          <div class="doc-list" id="doc-list"></div>
+
+          <div style="margin-top:20px;padding:14px;background:#FFF7ED;border-radius:10px;border:1px solid #FED7AA">
+            <p style="font-size:13px;color:#92400E;font-weight:500">💡 Recommended documents</p>
+            <p style="font-size:12px;color:#92400E;margin-top:4px">Public liability insurance • DBS check • NVQ certificates • CHAS/Constructionline card</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <button class="btn-secondary" onclick="showSection('pricing')">← Back</button>
+        <button class="btn-save" id="submit-btn" onclick="submitListing()">Submit Listing 🚀</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const UK_CITIES = ['Birmingham','Bristol','Edinburgh','Glasgow','Leeds','Leicester','Liverpool',
+  'London','Manchester','Newcastle','Nottingham','Oxford','Sheffield','Cardiff','Brighton','Southampton','Reading'];
+
+let currentUser = null;
+let businessId = null;
+let pendingFiles = [];
+
+// ---- Auth guard ----
+const { data: { session } } = await supabase.auth.getSession();
+if(!session) { window.location.href = '/auth.html'; }
+else {
+  currentUser = session.user;
+  document.getElementById('user-name').textContent = currentUser.email;
+  loadExistingBusiness();
+}
+
+// ---- Load city tags ----
+const cityContainer = document.getElementById('city-tags');
+UK_CITIES.forEach(city => {
+  const tag = document.createElement('div');
+  tag.className = 'city-tag';
+  tag.textContent = city;
+  tag.dataset.city = city;
+  tag.onclick = () => tag.classList.toggle('selected');
+  cityContainer.appendChild(tag);
+});
+
+// ---- Load existing business if any ----
+async function loadExistingBusiness() {
+  const { data } = await supabase.from('businesses').select('*').eq('owner_id', currentUser.id).single();
+  if(data) {
+    businessId = data.id;
+    document.getElementById('biz-name').value = data.business_name || '';
+    document.getElementById('biz-desc').value = data.description || '';
+    document.getElementById('biz-service').value = data.service_type || '';
+    document.getElementById('biz-phone').value = data.phone || '';
+    document.getElementById('biz-email').value = data.email || '';
+    document.getElementById('biz-website').value = data.website || '';
+    document.getElementById('biz-address').value = data.address || '';
+    document.getElementById('pricing-model').value = data.pricing_model || 'fixed';
+    document.getElementById('price-from').value = data.price_from || '';
+    document.getElementById('pricing-notes').value = data.pricing_notes || '';
+    // Cities
+    (data.cities || []).forEach(c => {
+      const tag = cityContainer.querySelector(`[data-city="${c}"]`);
+      if(tag) tag.classList.add('selected');
+    });
+    // Load pricing tiers
+    const { data: tiers } = await supabase.from('pricing_tiers').select('*').eq('business_id', businessId);
+    (tiers || []).forEach(t => addPricingRow(t.tier_name, t.price, t.unit));
+    // Load doc count
+    const { data: docs } = await supabase.from('business_documents').select('id').eq('business_id', businessId);
+    document.getElementById('doc-badge').textContent = docs?.length || 0;
+    // Mark step 1 done if biz exists
+    markStepDone(1);
+  } else {
+    addPricingRow();
+  }
+}
+
+// ---- Section switching ----
+window.showSection = function(name) {
+  ['details','pricing','documents'].forEach(s => {
+    document.getElementById(`section-${s}`).style.display = s === name ? 'block' : 'none';
+  });
+  const idx = {details:1,pricing:2,documents:3}[name];
+  const pct = {1:'33%',2:'66%',3:'100%'}[idx];
+  document.getElementById('progress-fill').style.width = pct;
+  // Sidebar highlight
+  document.querySelectorAll('.nav-item').forEach((el,i) => el.classList.toggle('active', i === idx-1));
+  // Step highlights
+  ['step-1','step-2','step-3'].forEach((id,i) => {
+    document.getElementById(id).classList.remove('active');
+  });
+  document.getElementById(`step-${idx}`).classList.add('active');
+};
+
+function markStepDone(n) {
+  document.getElementById(`step-${n}`).classList.add('done');
+  document.getElementById(`step-${n}`).classList.remove('active');
+}
+
+// ---- Save Business Details ----
+window.saveDetails = async function() {
+  const name = document.getElementById('biz-name').value.trim();
+  const service = document.getElementById('biz-service').value;
+  if(!name) { showToast('Business name is required','error'); return; }
+  if(!service) { showToast('Please select a service type','error'); return; }
+
+  const cities = [...document.querySelectorAll('.city-tag.selected')].map(t => t.dataset.city);
+  const payload = {
+    owner_id: currentUser.id,
+    business_name: name,
+    description: document.getElementById('biz-desc').value,
+    service_type: service,
+    phone: document.getElementById('biz-phone').value,
+    email: document.getElementById('biz-email').value,
+    website: document.getElementById('biz-website').value,
+    address: document.getElementById('biz-address').value,
+    cities,
+    updated_at: new Date().toISOString(),
+  };
+
+  let res;
+  if(businessId) {
+    res = await supabase.from('businesses').update(payload).eq('id', businessId);
+  } else {
+    res = await supabase.from('businesses').insert(payload).select().single();
+    if(res.data) businessId = res.data.id;
+  }
+
+  if(res.error) { showToast(res.error.message,'error'); return; }
+  markStepDone(1);
+  showToast('Business details saved!');
+  showSection('pricing');
+};
+
+// ---- Pricing rows ----
+window.addPricingRow = function(name='', price='', unit='job') {
+  const row = document.createElement('div');
+  row.className = 'pricing-row';
+  row.innerHTML = `
+    <input type="text" placeholder="e.g. 1-bed flat" value="${name}" style="padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;width:100%;outline:none"/>
+    <input type="number" placeholder="Price (£)" value="${price}" min="0" step="0.01" style="padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;width:100%;outline:none"/>
+    <select style="padding:9px 10px;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:12px;appearance:none;width:100%;outline:none">
+      <option ${unit==='job'?'selected':''}>job</option>
+      <option ${unit==='room'?'selected':''}>room</option>
+      <option ${unit==='sqm'?'selected':''}>sqm</option>
+      <option ${unit==='hour'?'selected':''}>hour</option>
+    </select>
+    <button class="btn-remove" onclick="this.closest('.pricing-row').remove()">×</button>
+  `;
+  document.getElementById('pricing-rows').appendChild(row);
+};
+
+window.savePricing = async function() {
+  if(!businessId) { showToast('Save business details first','error'); return; }
+
+  const model = document.getElementById('pricing-model').value;
+  const from = document.getElementById('price-from').value;
+  const notes = document.getElementById('pricing-notes').value;
+
+  await supabase.from('businesses').update({
+    pricing_model: model,
+    price_from: from || null,
+    pricing_notes: notes,
+    updated_at: new Date().toISOString()
+  }).eq('id', businessId);
+
+  // Save tiers
+  await supabase.from('pricing_tiers').delete().eq('business_id', businessId);
+  const rows = document.querySelectorAll('.pricing-row');
+  const tiers = [];
+  rows.forEach(row => {
+    const inputs = row.querySelectorAll('input');
+    const sel = row.querySelector('select');
+    const tierName = inputs[0].value.trim();
+    const price = parseFloat(inputs[1].value);
+    if(tierName && !isNaN(price)) {
+      tiers.push({ business_id: businessId, tier_name: tierName, price, unit: sel.value });
+    }
+  });
+  if(tiers.length) await supabase.from('pricing_tiers').insert(tiers);
+
+  markStepDone(2);
+  showToast('Pricing saved!');
+  showSection('documents');
+};
+
+// ---- File upload ----
+window.handleDragOver = function(e) { e.preventDefault(); e.currentTarget.classList.add('dragover'); };
+window.handleDragLeave = function(e) { e.currentTarget.classList.remove('dragover'); };
+window.handleDrop = function(e) {
+  e.preventDefault(); e.currentTarget.classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+};
+window.handleFiles = function(files) {
+  [...files].forEach(file => {
+    if(file.size > 10*1024*1024) { showToast(`${file.name} is over 10MB`,'error'); return; }
+    pendingFiles.push(file);
+    renderDocItem(file);
+  });
+  document.getElementById('doc-badge').textContent = pendingFiles.length;
+};
+
+function renderDocItem(file) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  const icon = ext === 'pdf' ? '📋' : '🖼️';
+  const size = (file.size/1024).toFixed(0) + ' KB';
+  const item = document.createElement('div');
+  item.className = 'doc-item';
+  item.innerHTML = `
+    <div class="doc-icon">${icon}</div>
+    <div class="doc-info">
+      <div class="doc-name">${file.name}</div>
+      <div class="doc-meta">${size}</div>
+    </div>
+    <select class="doc-type-select">
+      <option value="certificate">Certificate</option>
+      <option value="insurance">Insurance</option>
+      <option value="licence">Licence</option>
+      <option value="other">Other</option>
+    </select>
+    <button class="doc-remove" onclick="removeDoc(this,'${file.name}')">×</button>
+  `;
+  item.dataset.filename = file.name;
+  document.getElementById('doc-list').appendChild(item);
+}
+
+window.removeDoc = function(btn, name) {
+  pendingFiles = pendingFiles.filter(f => f.name !== name);
+  btn.closest('.doc-item').remove();
+  document.getElementById('doc-badge').textContent = pendingFiles.length;
+};
+
+// ---- Submit listing ----
+window.submitListing = async function() {
+  if(!businessId) { showToast('Complete business details first','error'); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = 'Uploading…';
+
+  // Upload each file
+  for(const file of pendingFiles) {
+    const docItem = document.querySelector(`.doc-item[data-filename="${file.name}"]`);
+    const docType = docItem?.querySelector('.doc-type-select')?.value || 'other';
+    const path = `${currentUser.id}/${businessId}/${Date.now()}-${file.name}`;
+
+    const { error: upErr } = await supabase.storage.from('business-documents').upload(path, file);
+    if(upErr) { showToast(`Failed to upload ${file.name}`,'error'); continue; }
+
+    await supabase.from('business_documents').insert({
+      business_id: businessId,
+      doc_type: docType,
+      file_name: file.name,
+      storage_path: path
+    });
+  }
+
+  // Set business to pending review
+  await supabase.from('businesses').update({ status:'pending', updated_at: new Date().toISOString() }).eq('id', businessId);
+
+  markStepDone(3);
+  btn.textContent = '✓ Submitted!';
+  showToast('Listing submitted for review! We\'ll be in touch within 24–48 hours.');
+};
+
+// ---- Sign out ----
+window.signOut = async function() {
+  await supabase.auth.signOut();
+  window.location.href = '/auth.html';
+};
+
+// ---- Toast ----
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+window.showToast = showToast;
+</script>
+</body>
+</html>
