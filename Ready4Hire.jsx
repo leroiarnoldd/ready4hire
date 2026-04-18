@@ -1,3 +1,11 @@
+// Supabase client — replace with your actual keys
+if(!window._supabase && window.supabase){
+  window._supabase = window.supabase.createClient(
+    'https://drvatxcmpunpzvkyesxc.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRydmF0eGNtcHVucHp2a3llc3hjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NTE5MjgsImV4cCI6MjA5MjAyNzkyOH0.Lys82d0coEOCoRqkh2FEsI64-ymX_jAz5XF3VZIDwm4'
+  );
+}
+
 import { useState, useEffect, useRef } from "react";
 
 const G = {
