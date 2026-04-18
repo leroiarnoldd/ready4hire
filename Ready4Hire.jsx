@@ -7903,7 +7903,111 @@ function AdminLogin({onSuccess}){
     </div>
   );
 }
+function AuthModal({mode, onClose, onAuth}){
+  const [tab, setTab] = React.useState(mode==="signup" ? "signup" : "signin");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [role, setRole] = React.useState("user");
+  const [error, setError] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [done, setDone] = React.useState(false);
 
+  const styles = {
+    overlay:{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:20},
+    card:{background:"#fff",borderRadius:20,width:"100%",maxWidth:420,overflow:"hidden",boxShadow:"0 12px 48px rgba(0,0,0,0.18)"},
+    header:{background:G.forest,padding:"28px 32px 24px",textAlign:"center"},
+    logo:{fontFamily:"'DM Serif Display',serif",fontSize:24,color:"#fff"},
+    body:{padding:"28px 32px 32px"},
+    tabRow:{display:"flex",background:"#F3F4F6",borderRadius:10,padding:4,marginBottom:24,gap:4},
+    tabBtn:(active)=>({flex:1,padding:"8px 12px",border:"none",background:active?"#fff":"transparent",borderRadius:8,fontFamily:"inherit",fontSize:14,fontWeight:500,color:active?G.forest:"#6B7280",cursor:"pointer",boxShadow:active?"0 1px 6px rgba(0,0,0,0.1)":"none"}),
+    field:{marginBottom:16},
+    label:{display:"block",fontSize:13,fontWeight:500,marginBottom:6,color:G.ink},
+    input:{width:"100%",padding:"10px 13px",border:"1.5px solid #E5E7EB",borderRadius:10,fontFamily:"inherit",fontSize:14,outline:"none",boxSizing:"border-box"},
+    roleRow:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16},
+    roleCard:(sel)=>({border:`1.5px solid ${sel?G.forest:"#E5E7EB"}`,borderRadius:12,padding:"12px 10px",cursor:"pointer",textAlign:"center",background:sel?"#F0FBF0":"#fff"}),
+    btn:{width:"100%",padding:12,background:G.forest,color:"#fff",border:"none",borderRadius:10,fontFamily:"inherit",fontSize:15,fontWeight:600,cursor:"pointer",marginTop:4},
+    err:{background:"#FEF2F2",color:"#DC2626",border:"1px solid #FCA5A5",borderRadius:8,padding:"9px 13px",fontSize:13,marginBottom:14},
+    success:{background:"#F0FDF4",color:"#16A34A",border:"1px solid #86EFAC",borderRadius:8,padding:"9px 13px",fontSize:13,marginBottom:14},
+  };
+
+  async function handleSubmit(e){
+    e.preventDefault();
+    setError(""); setLoading(true);
+    try {
+      if(tab==="signin"){
+        const {data,error:err} = await window._supabase.auth.signInWithPassword({email,password});
+        if(err) throw err;
+        onAuth(data.user);
+        onClose();
+      } else {
+        const {data,error:err} = await window._supabase.auth.signUp({
+          email, password,
+          options:{data:{full_name:name, role}}
+        });
+        if(err) throw err;
+        setDone(true);
+      }
+    } catch(err){
+      setError(err.message);
+    }
+    setLoading(false);
+  }
+
+  return(
+    <div style={styles.overlay} onClick={onClose}>
+      <div style={styles.card} onClick={e=>e.stopPropagation()}>
+        <div style={styles.header}>
+          <div style={styles.logo}>Ready <span style={{color:G.gold}}>4</span> Hire</div>
+        </div>
+        <div style={styles.body}>
+          <div style={styles.tabRow}>
+            <button style={styles.tabBtn(tab==="signin")} onClick={()=>setTab("signin")}>Sign In</button>
+            <button style={styles.tabBtn(tab==="signup")} onClick={()=>setTab("signup")}>Create Account</button>
+          </div>
+          {done ? (
+            <div style={styles.success}>Account created! Check your email to confirm, then sign in.</div>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              {error && <div style={styles.err}>{error}</div>}
+              {tab==="signup" && (
+                <>
+                  <div style={styles.field}>
+                    <label style={styles.label}>Full name</label>
+                    <input style={styles.input} value={name} onChange={e=>setName(e.target.value)} placeholder="Jane Smith" required/>
+                  </div>
+                  <div style={styles.roleRow}>
+                    <div style={styles.roleCard(role==="user")} onClick={()=>setRole("user")}>
+                      <div style={{fontSize:22,marginBottom:4}}>🏠</div>
+                      <div style={{fontSize:13,fontWeight:600}}>Customer</div>
+                      <div style={{fontSize:11,color:"#6B7280"}}>Looking for services</div>
+                    </div>
+                    <div style={styles.roleCard(role==="business_owner")} onClick={()=>setRole("business_owner")}>
+                      <div style={{fontSize:22,marginBottom:4}}>🏢</div>
+                      <div style={{fontSize:13,fontWeight:600}}>Business Owner</div>
+                      <div style={{fontSize:11,color:"#6B7280"}}>List my services</div>
+                    </div>
+                  </div>
+                </>
+              )}
+              <div style={styles.field}>
+                <label style={styles.label}>Email</label>
+                <input style={styles.input} type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" required/>
+              </div>
+              <div style={styles.field}>
+                <label style={styles.label}>Password</label>
+                <input style={styles.input} type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••" required/>
+              </div>
+              <button style={styles.btn} disabled={loading}>
+                {loading ? "Please wait…" : tab==="signin" ? "Sign In" : "Create Account"}
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 // ─── ROOT ─────────────────────────────────────────────────
 export default function App(){
   const [adminLoggedIn,setAdminLoggedIn]=useState(false);
