@@ -2878,7 +2878,17 @@ function PCLookup({onFound}){
     setSt("loading");
     await new Promise(r=>setTimeout(r,600));
     const cn=detectCityName(pc);
-    if(cn){setSt("found");onFound(pc.trim().toUpperCase(),detectPCKey(pc));}
+    if(cn){
+  setSt("found");
+  // Log search to Supabase
+  try{
+    fetch('https://drvatxcmpunpzvkyesxc.supabase.co/rest/v1/searches',{
+      method:'POST',
+      headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRydmF0eGNtcHVucHp2a3llc3hjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NTE5MjgsImV4cCI6MjA5MjAyNzkyOH0.Lys82d0coEOCoRqkh2FEsI64-ymX_jAz5XF3VZIDwm4','Content-Type':'application/json'},
+      body:JSON.stringify({city:cn, postcode:pc.trim().toUpperCase(), service:'carpet', searched_at:new Date().toISOString()})
+    });
+  }catch(e){}
+  onFound(pc.trim().toUpperCase(),detectPC
     else setSt("err");
   };
   return(
