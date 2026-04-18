@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ready 4 Hire — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#1B5E20;--green-mid:#2E7D32;--green-light:#C8E6C9;--green-bg:#F1F8F1;
+  --amber:#F5A800;--amber-dark:#E09600;
+  --ink:#1a1a1a;--muted:#6B7280;--border:#E5E7EB;--white:#fff;
+  --red:#DC2626;--red-bg:#FEF2F2;--red-border:#FCA5A5;
+  --shadow:0 2px 12px rgba(0,0,0,.07);--shadow-lg:0 8px 32px rgba(0,0,0,.12);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--green-bg);color:var(--ink);min-height:100vh}
+
+/* ── LOGIN ─────────────────────────────────────────────── */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#0a2e0d 0%,#1B5E20 50%,#2E7D32 100%)}
+.login-box{background:var(--white);border-radius:24px;padding:44px 40px;width:100%;max-width:400px;box-shadow:0 24px 80px rgba(0,0,0,.25);text-align:center}
+.login-logo{font-family:'DM Serif Display',serif;font-size:32px;color:var(--green);margin-bottom:4px}
+.login-logo span{color:var(--amber)}
+.login-sub{font-size:13px;color:var(--muted);margin-bottom:32px;font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+.login-input{width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;background:#FAFAFA;margin-bottom:14px;outline:none;transition:border-color .2s}
+.login-input:focus{border-color:var(--green-mid);background:var(--white)}
+.login-btn{width:100%;padding:14px;background:var(--green);color:#fff;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s}
+.login-btn:hover{background:var(--green-mid)}
+.login-err{color:var(--red);font-size:13px;margin-top:10px;display:none}
+
+/* ── NAV ─────────────────────────────────────────────── */
+.admin-wrap{display:none}
+.nav{background:var(--green);padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:21px;color:#fff}
+.nav-logo span{color:var(--amber)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.badge{background:var(--amber);color:#000;font-size:11px;font-weight:800;padding:4px 11px;border-radius:100px;letter-spacing:.3px}
+.nav-btn{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.nav-btn:hover{background:rgba(255,255,255,.2);color:#fff}
+
+/* ── BODY ─────────────────────────────────────────────── */
+.body{max-width:1140px;margin:0 auto;padding:36px 24px}
+.page-title{font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);margin-bottom:4px}
+.page-sub{font-size:14px;color:var(--muted);margin-bottom:28px}
+
+/* ── NORTH STAR ─────────────────────────────────────── */
+.north-star{background:linear-gradient(135deg,var(--green) 0%,#1a4d1e 100%);border-radius:18px;padding:26px 32px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.ns-left .ns-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.55);margin-bottom:8px}
+.ns-left .ns-num{font-family:'DM Serif Display',serif;font-size:52px;color:#fff;line-height:1}
+.ns-left .ns-desc{font-size:14px;color:rgba(255,255,255,.65);margin-top:6px}
+.ns-right{text-align:right;display:flex;flex-direction:column;gap:12px}
+.ns-mini{display:flex;flex-direction:column;align-items:flex-end}
+.ns-mini-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--amber)}
+.ns-mini-label{font-size:12px;color:rgba(255,255,255,.55)}
+
+/* ── STATS GRID ─────────────────────────────────────── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.stat{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px 22px;box-shadow:var(--shadow)}
+.stat-n{font-family:'DM Serif Display',serif;font-size:34px;color:var(--green)}
+.stat-l{font-size:13px;color:var(--muted);margin-top:4px;font-weight:500}
+
+/* ── TOP SEARCHES ─────────────────────────────────────── */
+.panel{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:var(--shadow)}
+.panel-title{font-family:'DM Serif Display',serif;font-size:18px;color:var(--green);margin-bottom:16px}
+.search-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F3F4F6}
+.search-row:last-child{border-bottom:none}
+.search-term{font-size:14px;font-weight:600;color:var(--ink)}
+.search-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.search-count{font-size:13px;font-weight:700;color:var(--green-mid);background:var(--green-bg);padding:4px 12px;border-radius:100px}
+
+/* ── TABS ─────────────────────────────────────────────── */
+.tab-row{display:flex;gap:0;margin-bottom:20px;border-bottom:2px solid var(--border)}
+.tab{padding:10px 22px;font-size:13px;font-weight:600;color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap}
+.tab:hover{color:var(--green)}
+.tab.active{color:var(--green);border-bottom-color:var(--amber)}
+
+/* ── CARDS ─────────────────────────────────────────────── */
+.cards{display:flex;flex-direction:column;gap:14px}
+.card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px 24px;box-shadow:var(--shadow)}
+.card.pending{border-left:4px solid var(--amber)}
+.card.active{border-left:4px solid var(--green-mid)}
+.card.suspended{border-left:4px solid var(--red);opacity:.7}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+.card-name{font-family:'DM Serif Display',serif;font-size:18px;color:var(--ink)}
+.card-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.card-actions{display:flex;gap:8px;flex-shrink:0}
+.btn-approve{padding:8px 18px;background:var(--green);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
+.btn-approve:hover{background:var(--green-mid)}
+.btn-reject{padding:8px 18px;background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.btn-reject:hover{background:var(--red);color:#fff}
+.btn-reset{padding:8px 16px;background:#F3F4F6;color:var(--muted);border:1px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-reset:hover{border-color:var(--green);color:var(--green)}
+.card-meta{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px}
+.meta-block .meta-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:2px}
+.meta-block .meta-value{font-size:13px;font-weight:600;color:var(--ink)}
+.card-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.status-pill{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:3px 10px;border-radius:100px}
+.status-pill.pending{background:#FFF8E1;color:#92400E}
+.status-pill.active{background:#F0FDF4;color:#166534}
+.status-pill.suspended{background:var(--red-bg);color:var(--red)}
+
+/* user card */
+.user-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow)}
+.user-avatar{width:42px;height:42px;border-radius:50%;background:var(--green-bg);border:2px solid var(--green-light);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--green-mid);font-size:16px;flex-shrink:0}
+.user-info{flex:1}
+.user-name{font-size:14px;font-weight:600;color:var(--ink)}
+.user-email{font-size:12px;color:var(--muted)}
+.user-role{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:3px 9px;border-radius:100px;margin-left:auto;flex-shrink:0}
+.user-role.user{background:var(--green-bg);color:var(--green-mid)}
+.user-role.business_owner{background:#FFF8E1;color:#92400E}
+.user-role.admin{background:#EEF2FF;color:#4338CA}
+
+/* recent searches table */
+.searches-table{width:100%;border-collapse:collapse}
+.searches-table th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:2px solid var(--border)}
+.searches-table td{font-size:13px;padding:10px 12px;border-bottom:1px solid #F3F4F6;color:var(--ink)}
+.searches-table tr:last-child td{border-bottom:none}
+.searches-table tr:hover td{background:#FAFAFA}
+
+/* empty / loading */
+.empty{text-align:center;padding:48px 24px;background:var(--white);border-radius:14px;border:1px dashed var(--border)}
+.empty p{color:var(--muted);font-size:15px}
+.loading{text-align:center;padding:40px;color:var(--muted);font-size:15px}
+
+/* toast */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:var(--shadow-lg);opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}
+.toast.show{opacity:1}
+.toast.error{background:var(--red)}
+
+@media(max-width:640px){
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .body{padding:20px 16px}
+  .card-top{flex-direction:column}
+  .card-actions{width:100%}
+  .btn-approve,.btn-reject{flex:1;text-align:center}
+  .north-star{flex-direction:column}
+  .ns-right{text-align:left;flex-direction:row;gap:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-wrap">
+  <div class="login-box">
+    <div class="login-logo">Ready <span>4</span> Hire</div>
+    <div class="login-sub">Admin Dashboard</div>
+    <input type="password" class="login-input" id="pw" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="login-err" id="login-err">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="admin-wrap" id="admin-wrap">
+  <nav class="nav">
+    <div class="nav-logo">Ready <span>4</span> Hire <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);margin-left:6px">Admin</span></div>
+    <div class="nav-right">
+      <span class="badge" id="pending-badge">0 pending</span>
+      <button class="nav-btn" onclick="doLogout()">Sign out</button>
+    </div>
+  </nav>
+
+  <div class="body">
+    <div class="page-title">Dashboard</div>
+    <div class="page-sub">Your north star: searches completed. Everything else supports this number.</div>
+
+    <!-- North Star -->
+    <div class="north-star">
+      <div class="ns-left">
+        <div class="ns-label">North Star Metric</div>
+        <div class="ns-num" id="ns-total">—</div>
+        <div class="ns-desc">Total searches all time</div>
+      </div>
+      <div class="ns-right">
+        <div class="ns-mini">
+          <div class="ns-mini-num" id="ns-week">—</div>
+          <div class="ns-mini-label">This week</div>
+        </div>
+        <div class="ns-mini">
+          <div class="ns-mini-num" id="ns-today" style="color:#fff">—</div>
+          <div class="ns-mini-label">Today</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-n" id="s-users">—</div><div class="stat-l">Registered users</div></div>
+      <div class="stat"><div class="stat-n" id="s-businesses">—</div><div class="stat-l">Listed businesses</div></div>
+      <div class="stat"><div class="stat-n" id="s-pending" style="color:#92400E">—</div><div class="stat-l">Pending approvals</div></div>
+      <div class="stat"><div class="stat-n" id="s-searches">—</div><div class="stat-l">Searches today</div></div>
+    </div>
+
+    <!-- Top searches -->
+    <div class="panel">
+      <div class="panel-title">🔍 Top Searches</div>
+      <div id="top-searches"><div class="loading">Loading...</div></div>
+    </div>
+
+    <!-- Recent searches -->
+    <div class="panel">
+      <div class="panel-title">📋 Recent Searches</div>
+      <div style="overflow-x:auto">
+        <table class="searches-table">
+          <thead>
+            <tr>
+              <th>City / Postcode</th>
+              <th>Service</th>
+              <th>Mode</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="recent-searches"><tr><td colspan="4" style="text-align:center;padding:24px;color:var(--muted)">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-row">
+      <button class="tab active" onclick="showTab('businesses',this)">Businesses</button>
+      <button class="tab" onclick="showTab('users',this)">Users</button>
+    </div>
+    <div id="main-content"><div class="loading">Loading...</div></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIG — replace with your actual values ──────────────
+var SB_URL = 'YOUR_SUPABASE_URL';
+var SB_KEY = 'YOUR_SUPABASE_ANON_KEY';
+var ADMIN_PASS = 'R4H@Admin2026'; // change this to your own password
+
+var allBusinesses = [];
+var allUsers = [];
+var currentTab = 'businesses';
+
+// ── AUTH ──────────────────────────────────────────────────
+window.onload = function(){ if(sessionStorage.getItem('r4h_admin')==='1') showAdmin(); };
+
+function doLogin(){
+  if(document.getElementById('pw').value === ADMIN_PASS){
+    sessionStorage.setItem('r4h_admin','1');
+    document.getElementById('login-err').style.display = 'none';
+    showAdmin();
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+    document.getElementById('pw').value = '';
+  }
+}
+
+function doLogout(){
+  sessionStorage.removeItem('r4h_admin');
+  document.getElementById('admin-wrap').style.display = 'none';
+  document.getElementById('login-wrap').style.display = 'flex';
+}
+
+function showAdmin(){
+  document.getElementById('login-wrap').style.display = 'none';
+  document.getElementById('admin-wrap').style.display = 'block';
+  loadAll();
+}
+
+// ── LOAD ALL DATA ─────────────────────────────────────────
+function loadAll(){
+  loadSearchStats();
+  loadBusinesses();
+  loadUsers();
+}
+
+// ── SEARCH STATS ──────────────────────────────────────────
+async function loadSearchStats(){
+  try {
+    var r = await sbFetch('/rest/v1/searches?select=city,postcode,service,mode,searched_at&order=searched_at.desc&limit=2000');
+    var searches = await r.json();
+
+    var now = Date.now();
+    var weekAgo = now - 7*24*60*60*1000;
+    var todayStart = new Date(); todayStart.setHours(0,0,0,0);
+
+    var total = searches.length;
+    var week = searches.filter(function(s){ return new Date(s.searched_at).getTime() > weekAgo; }).length;
+    var today = searches.filter(function(s){ return new Date(s.searched_at) >= todayStart; }).length;
+
+    document.getElementById('ns-total').textContent = total.toLocaleString();
+    document.getElementById('ns-week').textContent = week.toLocaleString();
+    document.getElementById('ns-today').textContent = today.toLocaleString();
+    document.getElementById('s-searches').textContent = today;
+
+    // Top searches
+    var counts = {};
+    searches.forEach(function(s){
+      var key = (s.city || s.postcode || 'Unknown') + ' — ' + (s.service || 'any');
+      counts[key] = (counts[key]||0) + 1;
+    });
+    var sorted = Object.entries(counts).sort(function(a,b){ return b[1]-a[1]; }).slice(0,10);
+    var html = sorted.length ? sorted.map(function(r,i){
+      return '<div class="search-row">'
+        +'<div><div class="search-term">'+(i+1)+'. '+r[0]+'</div></div>'
+        +'<div class="search-count">'+r[1]+' searches</div>'
+        +'</div>';
+    }).join('') : '<div style="color:var(--muted);font-size:14px;padding:12px 0">No searches recorded yet.</div>';
+    document.getElementById('top-searches').innerHTML = html;
+
+    // Recent searches table
+    var recentHtml = searches.slice(0,20).map(function(s){
+      var dt = new Date(s.searched_at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+      return '<tr>'
+        +'<td><strong>'+(s.city||s.postcode||'—')+'</strong></td>'
+        +'<td>'+(s.service||'—')+'</td>'
+        +'<td>'+(s.mode||'—')+'</td>'
+        +'<td style="color:var(--muted)">'+dt+'</td>'
+        +'</tr>';
+    }).join('');
+    document.getElementById('recent-searches').innerHTML = recentHtml || '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--muted)">No searches yet.</td></tr>';
+
+  } catch(e){ console.log('Search stats error:',e); }
+}
+
+// ── BUSINESSES ────────────────────────────────────────────
+async function loadBusinesses(){
+  try {
+    var r = await sbFetch('/rest/v1/businesses?select=*&order=created_at.desc');
+    allBusinesses = await r.json();
+    var pending = allBusinesses.filter(function(b){ return b.status==='pending'; }).length;
+    document.getElementById('s-pending').textContent = pending;
+    document.getElementById('pending-badge').textContent = pending + ' pending';
+    document.getElementById('s-businesses').textContent = allBusinesses.length;
+    if(currentTab === 'businesses') renderBusinesses();
+  } catch(e){ console.log('Businesses error:',e); }
+}
+
+function renderBusinesses(){
+  var list = allBusinesses;
+  if(!list.length){
+    document.getElementById('main-content').innerHTML = '<div class="empty"><p>No businesses listed yet.</p></div>';
+    return;
+  }
+  var h = '<div class="cards">';
+  list.forEach(function(b){
+    var st = b.status || 'pending';
+    var dt = new Date(b.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    h += '<div class="card '+st+'">';
+    h += '<div class="card-top"><div>'
+      +'<div class="card-name">'+b.business_name+'</div>'
+      +'<div class="card-sub">'+b.service_type+' · '+(b.address||'No address')+'</div>'
+      +'</div>';
+    h += '<div class="card-actions">';
+    if(st!=='active') h += '<button class="btn-approve" onclick="updBusiness(\''+b.id+'\',\'active\')">Approve</button>';
+    if(st!=='suspended') h += '<button class="btn-reject" onclick="updBusiness(\''+b.id+'\',\'suspended\')">Suspend</button>';
+    if(st!=='pending') h += '<button class="btn-reset" onclick="updBusiness(\''+b.id+'\',\'pending\')">Reset</button>';
+    h += '</div></div>';
+    h += '<div class="card-meta">';
+    h += meta('Phone', b.phone||'—');
+    h += meta('Email', b.email||'—');
+    h += meta('Cities', (b.cities||[]).slice(0,3).join(', ')||'—');
+    h += meta('Pricing', b.pricing_model ? '£'+b.price_from+' ('+b.pricing_model+')' : '—');
+    h += '</div>';
+    h += '<div class="card-footer">'
+      +'<span style="font-size:12px;color:var(--muted)">Listed '+dt+'</span>'
+      +'<span class="status-pill '+st+'">'+st+'</span>'
+      +'</div>';
+    h += '</div>';
+  });
+  h += '</div>';
+  document.getElementById('main-content').innerHTML = h;
+}
+
+async function updBusiness(id, status){
+  try {
+    await sbPatch('/rest/v1/businesses?id=eq.'+id, {status:status, updated_at:new Date().toISOString()});
+    var msgs = {active:'Business approved — now live ✓',suspended:'Business suspended',pending:'Reset to pending'};
+    toast(msgs[status]||'Updated');
+    await loadBusinesses();
+  } catch(e){ toast('Error: '+e.message, true); }
+}
+
+// ── USERS ─────────────────────────────────────────────────
+async function loadUsers(){
+  try {
+    var r = await sbFetch('/rest/v1/profiles?select=*&order=created_at.desc');
+    allUsers = await r.json();
+    document.getElementById('s-users').textContent = allUsers.length;
+    if(currentTab === 'users') renderUsers();
+  } catch(e){ console.log('Users error:',e); }
+}
+
+function renderUsers(){
+  if(!allUsers.length){
+    document.getElementById('main-content').innerHTML = '<div class="empty"><p>No users yet.</p></div>';
+    return;
+  }
+  var h = '<div style="display:flex;flex-direction:column;gap:10px">';
+  allUsers.forEach(function(u){
+    var initials = (u.full_name||u.email||'?').split(' ').map(function(w){ return w[0]; }).slice(0,2).join('').toUpperCase();
+    var dt = new Date(u.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    h += '<div class="user-card">'
+      +'<div class="user-avatar">'+initials+'</div>'
+      +'<div class="user-info">'
+      +'<div class="user-name">'+(u.full_name||'No name')+'</div>'
+      +'<div class="user-email">'+u.email+' · Joined '+dt+'</div>'
+      +'</div>'
+      +'<span class="user-role '+(u.role||'user')+'">'+((u.role||'user').replace('_',' '))+'</span>'
+      +'</div>';
+  });
+  h += '</div>';
+  document.getElementById('main-content').innerHTML = h;
+}
+
+// ── TABS ──────────────────────────────────────────────────
+function showTab(tab, btn){
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  if(btn) btn.classList.add('active');
+  if(tab === 'businesses') renderBusinesses();
+  if(tab === 'users') renderUsers();
+}
+
+// ── HELPERS ───────────────────────────────────────────────
+function meta(label, value){
+  return '<div class="meta-block"><div class="meta-label">'+label+'</div><div class="meta-value">'+value+'</div></div>';
+}
+
+function sbFetch(path){
+  return fetch(SB_URL+path, {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+}
+
+async function sbPatch(path, body){
+  var r = await fetch(SB_URL+path, {
+    method:'PATCH',
+    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+    body:JSON.stringify(body)
+  });
+  if(!r.ok) throw new Error('Failed: '+r.status);
+}
+
+function toast(msg, isError){
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast'+(isError?' error':'')+' show';
+  setTimeout(function(){ t.className = 'toast'+(isError?' error':''); }, 2800);
+}
+</script>
+</body>
+</html>
