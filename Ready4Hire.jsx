@@ -7912,15 +7912,14 @@ function AdminLogin({onSuccess}){
   );
 }
 function AuthModal({mode, onClose, onAuth}){
-  const [tab, setTab] = React.useState(mode==="signup" ? "signup" : "signin");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [name, setName] = React.useState("");
-  const [role, setRole] = React.useState("user");
-  const [error, setError] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
-  const [done, setDone] = React.useState(false);
-
+const [tab, setTab] = useState(mode==="signup" ? "signup" : "signin");
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const [name, setName] = useState("");
+const [role, setRole] = useState("user");
+const [error, setError] = useState("");
+const [loading, setLoading] = useState(false);
+const [done, setDone] = useState(false);
   const styles = {
     overlay:{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:20},
     card:{background:"#fff",borderRadius:20,width:"100%",maxWidth:420,overflow:"hidden",boxShadow:"0 12px 48px rgba(0,0,0,0.18)"},
