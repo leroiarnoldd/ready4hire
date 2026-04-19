@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ready 4 Hire Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#1B5E20;--gm:#2E7D32;--gl:#C8E6C9;--gbg:#F1F8F1;--a:#F5A800;--ink:#111827;--muted:#6B7280;--border:#E5E7EB;--w:#fff;--red:#DC2626;--redbg:#FEF2F2;--sh:0 1px 8px rgba(0,0,0,.07)}
+body{font-family:'DM Sans',sans-serif;background:#eef2ee;color:var(--ink);min-height:100vh}
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(140deg,#071a08 0%,#1B5E20 60%,#2d7a32 100%);padding:20px}
+.lbox{background:var(--w);border-radius:24px;padding:48px 40px;width:100%;max-width:380px;box-shadow:0 32px 80px rgba(0,0,0,.3);text-align:center}
+.llogo{font-family:'DM Serif Display',serif;font-size:34px;color:var(--g);margin-bottom:2px}
+.llogo b{color:var(--a);font-style:normal}
+.lsub{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:36px}
+.linp{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;background:#f8faf8;margin-bottom:14px;outline:none;transition:all .2s}
+.linp:focus{border-color:var(--gm);background:var(--w)}
+.lbtn{width:100%;padding:14px;background:var(--g);color:#fff;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer}
+.lbtn:hover{background:var(--gm)}
+.lerr{color:var(--red);font-size:13px;margin-top:10px;display:none}
+#app{display:none}
+.nav{background:var(--g);height:60px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.2)}
+.nlogo{font-family:'DM Serif Display',serif;font-size:20px;color:#fff}
+.nlogo b{color:var(--a);font-style:normal}
+.nbadge{background:var(--a);color:#000;font-size:11px;font-weight:800;padding:4px 11px;border-radius:100px}
+.nout{background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:7px 14px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:36px 24px}
+.ns{background:linear-gradient(135deg,#0d3311 0%,var(--g) 100%);border-radius:20px;padding:28px 36px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px}
+.ns-big{font-family:'DM Serif Display',serif;font-size:64px;color:#fff;line-height:1}
+.ns-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.45);margin-bottom:10px}
+.ns-desc{font-size:14px;color:rgba(255,255,255,.5);margin-top:8px}
+.nsp{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px 20px;text-align:center;min-width:90px}
+.nsp-n{font-family:'DM Serif Display',serif;font-size:28px;color:var(--a)}
+.nsp-l{font-size:11px;color:rgba(255,255,255,.5);margin-top:4px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.sc{background:var(--w);border:1px solid var(--border);border-radius:14px;padding:20px 22px;box-shadow:var(--sh)}
+.sc-n{font-family:'DM Serif Display',serif;font-size:36px;color:var(--g)}
+.sc-l{font-size:13px;color:var(--muted);margin-top:4px}
+.panel{background:var(--w);border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:var(--sh)}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.pt{font-family:'DM Serif Display',serif;font-size:18px;color:var(--g)}
+.ptag{font-size:11px;font-weight:600;color:var(--muted);background:#F3F4F6;padding:3px 10px;border-radius:100px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-label{font-size:13px;font-weight:600;min-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:8px;background:#F3F4F6;border-radius:99px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gm),var(--a))}
+.bar-count{font-size:12px;font-weight:700;color:var(--gm);min-width:32px;text-align:right}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:2px solid var(--border)}
+.tbl td{font-size:13px;padding:10px 12px;border-bottom:1px solid #F9FAFB}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#FAFCFA}
+.pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;white-space:nowrap}
+.pill.carpet{background:#E8F5E9;color:#1B5E20}
+.pill.patio{background:#FFF8E1;color:#92400E}
+.pill.eot{background:#EDE9FE;color:#5B21B6}
+.pill.hire{background:#E0F2FE;color:#0369A1}
+.pill.book{background:#FCE7F3;color:#9D174D}
+.pill.pending{background:#FFF8E1;color:#92400E}
+.pill.active{background:#F0FDF4;color:#166534}
+.pill.suspended{background:var(--redbg);color:var(--red)}
+.heatmap{display:grid;grid-template-columns:repeat(24,1fr);gap:3px;margin-top:6px}
+.hm-labels{display:grid;grid-template-columns:repeat(24,1fr);gap:3px;margin-bottom:4px}
+.hm-labels span{font-size:9px;color:var(--muted);text-align:center}
+.hm-cell{height:28px;border-radius:4px;transition:transform .1s;cursor:default}
+.hm-cell:hover{transform:scale(1.15);z-index:1;position:relative}
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:20px}
+.tab{padding:10px 20px;font-size:13px;font-weight:600;color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.tab.on{color:var(--g);border-bottom-color:var(--a)}
+.bcard{background:var(--w);border:1px solid var(--border);border-radius:12px;padding:18px 20px;box-shadow:var(--sh);margin-bottom:10px}
+.bcard.pending{border-left:4px solid var(--a)}
+.bcard.active{border-left:4px solid var(--gm)}
+.bcard.suspended{border-left:4px solid var(--red);opacity:.7}
+.ba{padding:7px 16px;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-right:6px}
+.ba.approve{background:var(--g);color:#fff}
+.ba.reject{background:var(--redbg);color:var(--red);border:1px solid #FCA5A5}
+.ba.reset{background:#F3F4F6;color:var(--muted);border:1px solid var(--border)}
+.urow{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #F3F4F6}
+.urow:last-child{border-bottom:none}
+.uav{width:38px;height:38px;border-radius:50%;background:var(--gbg);border:2px solid var(--gl);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--gm);font-size:14px;flex-shrink:0}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--g);color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.15);opacity:0;transition:opacity .3s;pointer-events:none;z-index:9999}
+.toast.show{opacity:1}
+.toast.err{background:var(--red)}
+.empty{text-align:center;padding:40px;color:var(--muted);font-size:14px;background:var(--w);border-radius:12px;border:1px dashed var(--border)}
+@media(max-width:768px){.g4{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.wrap{padding:20px 16px}.ns-big{font-size:44px}.heatmap,.hm-labels{grid-template-columns:repeat(12,1fr)}}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="lbox">
+    <div class="llogo">Ready <b>4</b> Hire</div>
+    <div class="lsub">Admin Intelligence</div>
+    <input type="password" class="linp" id="pw" placeholder="Admin password" onkeydown="if(event.key==='Enter')login()">
+    <button class="lbtn" onclick="login()">Sign In</button>
+    <div class="lerr" id="lerr">Incorrect password</div>
+  </div>
+</div>
+
+<div id="app">
+  <nav class="nav">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="nlogo">Ready <b>4</b> Hire</div>
+      <span style="font-size:12px;color:rgba(255,255,255,.4)">Admin</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="nbadge" id="nbadge">0 pending</span>
+      <button class="nout" onclick="logout()">Sign out</button>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:28px">
+      <div>
+        <div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--g)">Intelligence Dashboard</div>
+        <div style="font-size:14px;color:var(--muted);margin-top:4px" id="pg-sub">Loading...</div>
+      </div>
+      <button onclick="loadAll()" style="background:var(--gbg);border:1px solid var(--gl);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--gm);cursor:pointer;font-family:'DM Sans',sans-serif">&#8635; Refresh</button>
+    </div>
+
+    <div class="ns">
+      <div>
+        <div class="ns-label">North Star &mdash; Total Searches</div>
+        <div class="ns-big" id="ns-total">&mdash;</div>
+        <div class="ns-desc">All-time postcode lookups on Ready4Hire</div>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap">
+        <div class="nsp"><div class="nsp-n" id="ns-today">&mdash;</div><div class="nsp-l">Today</div></div>
+        <div class="nsp"><div class="nsp-n" id="ns-week">&mdash;</div><div class="nsp-l">This week</div></div>
+        <div class="nsp"><div class="nsp-n" id="ns-month">&mdash;</div><div class="nsp-l">This month</div></div>
+      </div>
+    </div>
+
+    <div class="g4">
+      <div class="sc"><div class="sc-n" id="sc-users">&mdash;</div><div class="sc-l">Registered users</div></div>
+      <div class="sc"><div class="sc-n" id="sc-biz">&mdash;</div><div class="sc-l">Listed businesses</div></div>
+      <div class="sc"><div class="sc-n" id="sc-pending" style="color:#92400E">&mdash;</div><div class="sc-l">Awaiting approval</div></div>
+      <div class="sc"><div class="sc-n" id="sc-today">&mdash;</div><div class="sc-l">Searches today</div></div>
+    </div>
+
+    <div class="g2">
+      <div class="panel"><div class="ph"><div class="pt">&#128205; Top Cities</div><span class="ptag">by searches</span></div><div id="top-cities"><div style="color:var(--muted);font-size:13px">Loading...</div></div></div>
+      <div class="panel"><div class="ph"><div class="pt">&#129529; Top Services</div><span class="ptag">what people want</span></div><div id="top-services"><div style="color:var(--muted);font-size:13px">Loading...</div></div></div>
+    </div>
+
+    <div class="panel" style="margin-bottom:20px">
+      <div class="ph"><div class="pt">&#9200; When People Search</div><span class="ptag">by hour of day</span></div>
+      <div class="hm-labels" id="hm-labels"></div>
+      <div class="heatmap" id="heatmap"></div>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:10px">
+        <span style="font-size:11px;color:var(--muted)">Fewer</span>
+        <div style="display:flex;gap:2px">
+          <div style="width:14px;height:14px;border-radius:3px;background:#F3F4F6"></div>
+          <div style="width:14px;height:14px;border-radius:3px;background:#C8E6C9"></div>
+          <div style="width:14px;height:14px;border-radius:3px;background:#81C784"></div>
+          <div style="width:14px;height:14px;border-radius:3px;background:#388E3C"></div>
+          <div style="width:14px;height:14px;border-radius:3px;background:#1B5E20"></div>
+        </div>
+        <span style="font-size:11px;color:var(--muted)">More</span>
+      </div>
+    </div>
+
+    <div class="g2" style="margin-bottom:20px">
+      <div class="panel"><div class="ph"><div class="pt">&#128256; Hire vs Book</div><span class="ptag">intent split</span></div><div id="hire-book"><div style="color:var(--muted);font-size:13px">Loading...</div></div></div>
+      <div class="panel"><div class="ph"><div class="pt">&#128197; Day of Week</div><span class="ptag">busiest days</span></div><div id="dow"><div style="color:var(--muted);font-size:13px">Loading...</div></div></div>
+    </div>
+
+    <div class="panel" style="margin-bottom:20px">
+      <div class="ph"><div class="pt">&#128336; Recent Searches</div><span class="ptag">last 50</span></div>
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <thead><tr><th>#</th><th>City / Postcode</th><th>Service</th><th>Mode</th><th>When</th></tr></thead>
+          <tbody id="recent-tbl"><tr><td colspan="5" style="text-align:center;padding:24px;color:var(--muted)">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab on" onclick="showTab('biz',this)">&#127970; Businesses</button>
+      <button class="tab" onclick="showTab('users',this)">&#128100; Users</button>
+    </div>
+    <div id="tab-content"><div style="color:var(--muted);text-align:center;padding:32px">Loading...</div></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var SB='YOUR_SUPABASE_URL', KEY='YOUR_SUPABASE_ANON_KEY', PWD='R4H@Admin2026';
+var searches=[],businesses=[],users=[],activeTab='biz';
+
+window.onload=function(){if(sessionStorage.getItem('r4h_adm')==='1')boot();};
+function login(){
+  if(document.getElementById('pw').value===PWD){sessionStorage.setItem('r4h_adm','1');document.getElementById('lerr').style.display='none';boot();}
+  else{document.getElementById('lerr').style.display='block';document.getElementById('pw').value='';}
+}
+function logout(){sessionStorage.removeItem('r4h_adm');document.getElementById('app').style.display='none';document.getElementById('login').style.display='flex';}
+function boot(){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';loadAll();}
+
+async function loadAll(){
+  document.getElementById('pg-sub').textContent='Refreshing...';
+  await Promise.all([loadSearches(),loadBusinesses(),loadUsers()]);
+  document.getElementById('pg-sub').textContent='Last updated: '+new Date().toLocaleTimeString('en-GB');
+}
+
+async function loadSearches(){
+  try{var r=await sbGet('/rest/v1/searches?select=*&order=searched_at.desc&limit=5000');searches=await r.json();renderSearches();}catch(e){console.log('s',e);}
+}
+function renderSearches(){
+  var now=Date.now(),d0=new Date();d0.setHours(0,0,0,0);
+  var w0=now-7*24*60*60*1000,m0=now-30*24*60*60*1000;
+  var total=searches.length;
+  var today=searches.filter(function(s){return new Date(s.searched_at)>=d0;}).length;
+  var week=searches.filter(function(s){return new Date(s.searched_at).getTime()>w0;}).length;
+  var month=searches.filter(function(s){return new Date(s.searched_at).getTime()>m0;}).length;
+  el('ns-total',total.toLocaleString());el('ns-today',today);el('ns-week',week);el('ns-month',month);el('sc-today',today);
+  bars('top-cities',tally('city'),8);
+  bars('top-services',tally('service'),5);
+  var hire=searches.filter(function(s){return s.mode==='hire';}).length;
+  var book=searches.filter(function(s){return s.mode==='book';}).length;
+  var tot=hire+book||1;
+  document.getElementById('hire-book').innerHTML=b2('Hire a machine',hire,tot,'#2E7D32')+b2('Book a pro',book,tot,'#F5A800')+'<div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)">Based on '+tot.toLocaleString()+' searches</div>';
+  var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],dc=Array(7).fill(0);
+  searches.forEach(function(s){if(s.searched_at)dc[new Date(s.searched_at).getDay()]++;});
+  var maxD=Math.max.apply(null,dc)||1;
+  document.getElementById('dow').innerHTML=days.map(function(d,i){return '<div class="bar-row"><div class="bar-label">'+d+'</div><div class="bar-track"><div class="bar-fill" style="width:'+pct(dc[i],maxD)+'%"></div></div><div class="bar-count">'+dc[i]+'</div></div>';}).join('');
+  var hc=Array(24).fill(0);
+  searches.forEach(function(s){if(s.searched_at)hc[new Date(s.searched_at).getHours()]++;});
+  var maxH=Math.max.apply(null,hc)||1,cols=['#F3F4F6','#C8E6C9','#81C784','#388E3C','#1B5E20'],labH='',hmH='';
+  for(var h=0;h<24;h++){var f=hc[h]/maxH,ci=f===0?0:f<.25?1:f<.5?2:f<.75?3:4,lbl=h===0?'12a':h<12?h+'a':h===12?'12p':(h-12)+'p';labH+='<span>'+lbl+'</span>';hmH+='<div class="hm-cell" style="background:'+cols[ci]+'" title="'+lbl+': '+hc[h]+' searches"></div>';}
+  document.getElementById('hm-labels').innerHTML=labH;document.getElementById('heatmap').innerHTML=hmH;
+  var rows=searches.slice(0,50).map(function(s,i){var dt=s.searched_at?new Date(s.searched_at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'&mdash;';return '<tr><td style="color:var(--muted);font-size:11px">'+(i+1)+'</td><td><strong>'+(s.city||s.postcode||'&mdash;')+'</strong></td><td>'+(s.service?'<span class="pill '+s.service+'">'+s.service+'</span>':'&mdash;')+'</td><td>'+(s.mode?'<span class="pill '+s.mode+'">'+s.mode+'</span>':'&mdash;')+'</td><td style="color:var(--muted)">'+dt+'</td></tr>';}).join('');
+  document.getElementById('recent-tbl').innerHTML=rows||'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--muted)">No searches yet &mdash; add logging to Ready4Hire.jsx</td></tr>';
+}
+
+async function loadBusinesses(){
+  try{var r=await sbGet('/rest/v1/businesses?select=*&order=created_at.desc');businesses=await r.json();var p=businesses.filter(function(b){return b.status==='pending';}).length;el('sc-pending',p);el('sc-biz',businesses.length);document.getElementById('nbadge').textContent=p+' pending';if(activeTab==='biz')renderBiz();}catch(e){console.log('b',e);}
+}
+function renderBiz(){
+  if(!businesses.length){document.getElementById('tab-content').innerHTML='<div class="empty">No businesses yet.</div>';return;}
+  document.getElementById('tab-content').innerHTML=businesses.map(function(b){var st=b.status||'pending',dt=b.created_at?new Date(b.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'&mdash;';return '<div class="bcard '+st+'"><div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px"><div><div style="font-size:16px;font-weight:700">'+xe(b.business_name||'Unnamed')+'</div><div style="font-size:12px;color:var(--muted);margin-top:2px">'+(b.service_type||'')+(b.address?' &middot; '+xe(b.address):'')+'</div></div><div>'+(st!=='active'?'<button class="ba approve" onclick="updBiz(\''+b.id+'\',\'active\')">&#10003; Approve</button>':'')+(st!=='suspended'?'<button class="ba reject" onclick="updBiz(\''+b.id+'\',\'suspended\')">&#10005; Suspend</button>':'')+(st!=='pending'?'<button class="ba reset" onclick="updBiz(\''+b.id+'\',\'pending\')">Reset</button>':'')+'</div></div><div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:10px">'+mini('Phone',b.phone||'&mdash;')+mini('Email',b.email||'&mdash;')+mini('Cities',(b.cities||[]).slice(0,3).join(', ')||'&mdash;')+mini('Price',b.pricing_model?'From &pound;'+(b.price_from||'?')+' ('+b.pricing_model+')':'&mdash;')+'</div><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:11px;color:var(--muted)">Submitted '+dt+'</span><span class="pill '+st+'">'+st+'</span></div></div>';}).join('');
+}
+async function updBiz(id,status){
+  try{var r=await fetch(SB+'/rest/v1/businesses?id=eq.'+id,{method:'PATCH',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({status:status,updated_at:new Date().toISOString()})});if(!r.ok)throw new Error(r.status);toast({active:'&#10003; Approved',suspended:'Suspended',pending:'Reset'}[status]||'Updated');await loadBusinesses();}catch(e){toast('Error: '+e.message,true);}
+}
+async function loadUsers(){
+  try{var r=await sbGet('/rest/v1/profiles?select=*&order=created_at.desc');users=await r.json();el('sc-users',users.length);if(activeTab==='users')renderUsers();}catch(e){console.log('u',e);}
+}
+function renderUsers(){
+  if(!users.length){document.getElementById('tab-content').innerHTML='<div class="empty">No users yet.</div>';return;}
+  document.getElementById('tab-content').innerHTML='<div style="background:var(--w);border:1px solid var(--border);border-radius:14px;padding:16px 20px;box-shadow:var(--sh)">'+users.map(function(u){var init=((u.full_name||u.email||'?').split(' ').map(function(w){return w[0];}).slice(0,2).join('')).toUpperCase(),dt=u.created_at?new Date(u.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'&mdash;',role=u.role||'user';return '<div class="urow"><div class="uav">'+init+'</div><div style="flex:1"><div style="font-size:14px;font-weight:600">'+(u.full_name||'No name')+'</div><div style="font-size:12px;color:var(--muted)">'+xe(u.email||'')+'&nbsp;&middot;&nbsp;Joined '+dt+'</div></div><span class="pill '+role+'">'+role.replace('_',' ')+'</span></div>';}).join('')+'</div>';
+}
+function showTab(tab,btn){activeTab=tab;document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});btn.classList.add('on');if(tab==='biz')renderBiz();if(tab==='users')renderUsers();}
+function sbGet(path){return fetch(SB+path,{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});}
+function el(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+function pct(a,b){return b?Math.round(a/b*100):0;}
+function xe(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function mini(l,v){return '<div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:2px">'+l+'</div><div style="font-size:13px;font-weight:600">'+v+'</div></div>';}
+function tally(key){var c={};searches.forEach(function(s){var k=s[key]||'Unknown';c[k]=(c[k]||0)+1;});return Object.entries(c).sort(function(a,b){return b[1]-a[1];});}
+function bars(id,data,limit){if(!data.length){document.getElementById(id).innerHTML='<div style="color:var(--muted);font-size:13px;padding:8px 0">No data yet.</div>';return;}var max=data[0][1]||1;document.getElementById(id).innerHTML=data.slice(0,limit).map(function(r){return '<div class="bar-row"><div class="bar-label">'+xe(r[0])+'</div><div class="bar-track"><div class="bar-fill" style="width:'+pct(r[1],max)+'%"></div></div><div class="bar-count">'+r[1]+'</div></div>';}).join('');}
+function b2(label,val,total,color){return '<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:13px;font-weight:600">'+label+'</span><span style="font-size:13px;font-weight:700;color:'+color+'">'+val+' ('+pct(val,total)+'%)</span></div><div style="height:10px;background:#F3F4F6;border-radius:99px;overflow:hidden"><div style="height:100%;width:'+pct(val,total)+'%;background:'+color+';border-radius:99px"></div></div></div>';}
+function toast(msg,isErr){var t=document.getElementById('toast');t.innerHTML=msg;t.className='toast'+(isErr?' err':'')+' show';setTimeout(function(){t.className='toast'+(isErr?' err':'');},2800);}
+</script>
+</body>
+</html>
