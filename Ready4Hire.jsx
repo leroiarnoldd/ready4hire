@@ -2604,8 +2604,25 @@ function detectPCKey(pc) {
   return null;
 }
 function detectCityName(pc) {
+  const u = pc.trim().toUpperCase();
+  // City name detection
+  const cityMap = {
+    'LONDON':'London','BIRMINGHAM':'Birmingham','MANCHESTER':'Manchester',
+    'LEEDS':'Leeds','SHEFFIELD':'Sheffield','BRISTOL':'Bristol',
+    'LEICESTER':'Leicester','NOTTINGHAM':'Nottingham','DERBY':'Derby',
+    'COVENTRY':'Coventry','READING':'Reading','OXFORD':'Oxford',
+    'SWINDON':'Swindon','BATH':'Bath','LUTON':'Luton',
+    'NORTHAMPTON':'Northampton','MILTON KEYNES':'Milton Keynes','MK':'Milton Keynes'
+  };
+  if(cityMap[u]) return cityMap[u];
+  // Postcode prefix detection
   const k = detectPCKey(pc);
-  return k==="SW"?"London" : k==="M"?"Manchester" : k==="B"?"Birmingham" : null;
+  return k==="SW"?"London":k==="M"?"Manchester":k==="B"?"Birmingham":
+    k==="LS"?"Leeds":k==="S"?"Sheffield":k==="BS"?"Bristol":
+    k==="LE"?"Leicester":k==="NG"?"Nottingham":k==="DE"?"Derby":
+    k==="CV"?"Coventry":k==="RG"?"Reading":k==="OX"?"Oxford":
+    k==="SN"?"Swindon":k==="BA"?"Bath":k==="LU"?"Luton":
+    k==="NN"?"Northampton":k==="MK"?"Milton Keynes":null;
 }
 
 // ── META / HEAD SETUP ─────────────────────────────────────
