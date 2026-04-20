@@ -2907,12 +2907,7 @@ if(cn){
   setSt("found");
   onFound(pc.trim().toUpperCase(),detectPCKey(pc));
 } else setSt("err");
-  try{
-    fetch('YOUR_SUPABASE_URL/rest/v1/searches',{
-      method:'POST',
-      headers:{'apikey':'YOUR_SUPABASE_ANON_KEY','Content-Type':'application/json','Prefer':'return=minimal'},
-      body:JSON.stringify({city:cn,postcode:pc.trim().toUpperCase(),service:'carpet',searched_at:new Date().toISOString()})
-    });
+
   }catch(e){}
   onFound(pc.trim().toUpperCase(),detectPCKey(pc));
 } else setSt("err");
