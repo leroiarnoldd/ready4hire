@@ -543,7 +543,7 @@ const PATIO_TOOLS = [
 // ─── PATIO AFFILIATE SHOPS ────────────────────────────────
 const PATIO_AFFILIATE_SHOPS = [
   { name:"B&Q",        url:"diy.com",        commission:"5%",  network:"Impact",    note:"UK's largest DIY retailer. Pressure washers, patio cleaners, decking oil, tools, accessories.", col:"#E65100" },
-  { name:"Wickes",     url:"wickes.co.uk",   commission:"3–5%",network:"AWIN",      note:"Patio slabs, block paving, jointing sand, tools, cleaning products.", col:"#C62828" },
+  { name:"Wickes",     url:"https://tidd.ly/4cFgKqM",   commission:"3–5%",network:"AWIN",      note:"Patio slabs, block paving, jointing sand, tools, cleaning products.", col:"#C62828" },
   { name:"Screwfix",   url:"screwfix.com",   commission:"~3%", network:"AWIN",      note:"Pressure washers, hoses, accessories, Kärcher attachments, cleaning chemicals.", col:"#1565C0" },
   { name:"Toolstation",url:"toolstation.com",commission:"~2%", network:"Admitad/CJ",note:"Pressure washers, accessories, brushes, chemicals, extension lances.", col:"#F5A800" },
   { name:"Amazon",     url:"amazon.co.uk",   commission:"3%",  network:"Associates",note:"Tools, solutions, brushes, kneeling pads, hoses — basket-wide 24hr cookie.", col:"#232F3E" },
