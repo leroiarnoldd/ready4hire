@@ -2885,9 +2885,11 @@ function PCLookup({onFound}){
     if(!pc.trim())return;
     setSt("loading");
     await new Promise(r=>setTimeout(r,600));
-    const cn=detectCityName(pc);
+ const cn=detectCityName(pc);
 if(cn){
   setSt("found");
+  onFound(pc.trim().toUpperCase(),detectPCKey(pc));
+} else setSt("err");
   try{
     fetch('YOUR_SUPABASE_URL/rest/v1/searches',{
       method:'POST',
