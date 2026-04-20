@@ -542,6 +542,14 @@ const PATIO_TOOLS = [
 
 // ─── PATIO AFFILIATE SHOPS ────────────────────────────────
 const PATIO_AFFILIATE_SHOPS = [
+  { 
+  name:"Machine Mart",
+  url:"https://www.awin1.com/cread.php?awinmid=3131&awinaffid=2820724",
+  commission:"~5%",
+  network:"AWIN",
+  note:"Pressure washers, patio cleaners, Kärcher machines and accessories. Trade quality equipment for domestic and commercial use.",
+  col:"#E65100"
+},
   { name:"B&Q",        url:"diy.com",        commission:"5%",  network:"Impact",    note:"UK's largest DIY retailer. Pressure washers, patio cleaners, decking oil, tools, accessories.", col:"#E65100" },
   { name:"Wickes",     url:"https://tidd.ly/4cFgKqM",   commission:"3–5%",network:"AWIN",      note:"Patio slabs, block paving, jointing sand, tools, cleaning products.", col:"#C62828" },
   { name:"Screwfix",   url:"screwfix.com",   commission:"~3%", network:"AWIN",      note:"Pressure washers, hoses, accessories, Kärcher attachments, cleaning chemicals.", col:"#1565C0" },
