@@ -2907,11 +2907,6 @@ if(cn){
   setSt("found");
   onFound(pc.trim().toUpperCase(),detectPCKey(pc));
 } else setSt("err");
-
-  }catch(e){}
-  onFound(pc.trim().toUpperCase(),detectPCKey(pc));
-} else setSt("err");
-  };
   return(
     <div>
       <div style={{display:"flex",gap:8}}>
